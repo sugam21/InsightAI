@@ -1,4 +1,6 @@
 docs/
+src/insightai/data/images
+src/insightai/data/pdfs
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
