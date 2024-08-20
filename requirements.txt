@@ -1,4 +1,4 @@
-setuptools
-datasets
-pandas 
+pandas
 openpyxl
+torch
+torchvision
