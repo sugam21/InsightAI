@@ -1,0 +1,36 @@
+{
+  "data": {
+    "image_path": "data\\images",
+    "pdf_path": "data\\pdfs",
+    "image_labels_path": "data\\image_labels.csv"
+  },
+  "train": {
+    "batch_size": 32,
+    "buffer_size": 1000,
+    "epochs": 50,
+    "checkpoint_save_dir": "src\\training\\checkpoints",
+    "save_period": 1,
+    "verbosity": 2,
+    "early_stop": 10,
+    "tensorboard": true,
+    "n_gpu": 1,
+    "seed": 123456,
+    "optimizer": {
+      "type": "Adam",
+      "args": {
+        "lr": 0.001,
+        "weight_decay": 0
+      }
+    },
+    "loss": {
+      "type": "nll_loss"
+    },
+    "metrics": [
+      "accuracy"
+    ]
+  },
+  "model": {
+    "input": [3, 256, 256],
+    "output": 17
+  }
+}
