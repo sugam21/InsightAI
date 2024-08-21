@@ -2,7 +2,11 @@
   "data": {
     "image_path": "data\\images",
     "pdf_path": "data\\pdfs",
-    "image_labels_path": "data\\image_labels.csv"
+    "image_labels_path": "data\\image_labels.csv",
+    "random_state": 123456,
+    "channel_mean": [0.485, 0.456, 0.406],
+    "channel_std": [0.229, 0.224, 0.225],
+    "image_size": 224
   },
   "train": {
     "batch_size": 32,
