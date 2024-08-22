@@ -1,50 +1,8 @@
 from torch.utils.data import Dataset
 import numpy as np
 from PIL import Image
-import albumentations as A
-from albumentations.pytorch import ToTensorV2
-from torch import Tensor
 import pandas as pd
 import os
-
-
-class DataTransform:
-    def __init__(self, input_size: int, channel_mean, channel_std):
-        self.data_transform = {
-            "base": A.Compose(
-                [
-                    A.RandomCrop(width=input_size, height=input_size),
-                    A.HorizontalFlip(p=0.5),
-                    A.Normalize(mean=channel_mean, std=channel_std, max_pixel_value=255),
-                    ToTensorV2(),
-                ]
-            ),
-            "train": A.Compose(
-                [
-                    A.RandomCrop(width=input_size, height=input_size),
-                    A.HorizontalFlip(p=0.5),
-                    A.RandomBrightnessContrast(brightness_limit=1, contrast_limit=1, p=1.0),
-                    A.ShiftScaleRotate(p=0.2),
-                    A.Normalize(mean=channel_mean, std=channel_std, max_pixel_value=255),
-                    ToTensorV2(),
-                ]
-            ),
-            "valid": A.Compose(
-                [
-                    A.Normalize(mean=channel_mean, std=channel_std, max_pixel_value=255),
-                    ToTensorV2(),
-                ]
-            ),
-        }
-
-    def __call__(self, image: Tensor, is_train: bool = False, is_augment: bool = False):
-        transform_type: str
-        if is_train:
-            transform_type = "train" if is_augment else "base"
-        else:
-            transform_type = "base"
-        transformed = self.data_transform[transform_type](image=image)
-        return transformed['image']
 
 
 class CustomDataset(Dataset):
@@ -65,7 +23,7 @@ class CustomDataset(Dataset):
             self.image_label_df['alteration'] = False
         self.transform: any = transform
 
-    def len(self) -> int:
+    def __len__(self) -> int:
         return len(self.image_label_df)
 
     def __getitem__(self, idx: int):
