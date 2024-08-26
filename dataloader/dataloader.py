@@ -1,6 +1,6 @@
 from .custom_dataset import CustomDataset
 from .data_transform import DataTransform
-from .base_dataloader import BaseDataLoader
+from base.base_dataloader import BaseDataLoader
 from torch.utils.data import DataLoader
 from typing import Dict, Tuple
 import pandas as pd
