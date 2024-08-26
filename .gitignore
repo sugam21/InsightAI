@@ -1,6 +1,7 @@
 docs/
 data/images
 data/pdfs
+.idea
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

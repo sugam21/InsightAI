@@ -33,19 +33,19 @@ class BaseDataLoader:
         Returns:
             train, validation, test (Tuple): A tuple containing train, validation, and test dataframe.
         """
-        ...
+        raise NotImplementedError
 
     @abstractmethod
     def get_train_dataloader(self, batch_size: int):
         """Returns the train dataloader with given batch size"""
-        pass
+        raise NotImplementedError
 
     @abstractmethod
-    def get_validataion_dataloader(self, batch_size: int):
+    def get_validation_dataloader(self, batch_size: int):
         """Returns the validation dataloader with given batch size"""
-        pass
+        raise NotImplementedError
 
     @abstractmethod
     def get_test_dataloader(self, batch_size: int):
         """Returns the test dataloader with given batch size"""
-        pass
+        raise NotImplementedError

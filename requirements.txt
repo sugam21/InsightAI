@@ -1,11 +1,12 @@
 pandas~=2.2.2
-openpyxl
 torch~=2.4.0
 torchvision
 scikit-learn~=1.5.1
 matplotlib
-timm
 pillow~=10.4.0
 albumentations~=1.4.14
 setuptools~=72.1.0
 numpy~=1.26.4
+sphinx
+insegel
+coverage
