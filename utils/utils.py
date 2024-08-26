@@ -4,14 +4,16 @@ import numpy as np
 import random
 import torch
 import matplotlib.pyplot as plt
+from logger import setup_logging
 
 
 class Config:
-    """Takes the config file path and returns a Config object."""
+    """Takes the config file path and returns a Config object while setting up logger."""
     def __init__(self, data: Dict[str, any], train: Dict[str, any], model: Dict[str, any]) -> None:
         self.data: Dict[str, any] = data
         self.train: Dict[str, any] = train
         self.model: Dict[str, any] = model
+        setup_logging(save_dir=self.train["log_save_dir"])
 
     @classmethod
     def from_json(cls, config_path):
@@ -24,7 +26,7 @@ def seed_everything(seed: int = 42) -> None:
     """
     This function seeds everything as name suggests
     PARAMS:
-    seed(int): number to seed to
+    seed (int): number to seed to
 
     RETURNS:
     none
