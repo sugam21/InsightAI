@@ -1,5 +1,7 @@
 docs/
 data/images
+data/*.py
+data/*.ipynb
 data/pdfs
 .idea
 # Byte-compiled / optimized / DLL files
