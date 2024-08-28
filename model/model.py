@@ -2,6 +2,9 @@ import torch
 from torchvision.models import squeezenet1_1, mobilenet_v3_large
 import torch.nn as nn
 from base import BaseModel
+from logger import get_logger
+
+LOG = get_logger("model")
 
 
 class SqueezeNet(BaseModel):
