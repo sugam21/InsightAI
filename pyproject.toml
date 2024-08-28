@@ -2,7 +2,7 @@
 name = "insightai"
 version = "0.1.0"
 description = ""
-authors = ["Sugam Sharma <sugams342@gmail.com>"]
+authors = ["Sugam Sharma <sugams342@gmail.com>, Apurva Patil <apurvampatil17@gmail.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
@@ -15,6 +15,7 @@ albumentations = "^1.4.14"
 scikit-learn = "^1.5.1"
 sphinx = "^8.0.2"
 insegel = "^1.3.1"
+tqdm = "^4.66.5"
 
 
 [build-system]

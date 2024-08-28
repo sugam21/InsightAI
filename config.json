@@ -26,12 +26,8 @@
       },
       "resume": {}
     },
-    "loss": {
-      "type": "nll_loss"
-    },
-    "metrics": [
-      "accuracy"
-    ]
+    "loss": "cross_entropy_loss",
+    "metric": "accuracy"
   },
   "model": {
     "input": [3, 256, 256],
