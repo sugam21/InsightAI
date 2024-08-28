@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "insightai"
+version = "0.1.0"
+description = ""
+authors = ["Sugam Sharma <sugams342@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+torch = "^2.4.0"
+torchvision = "^0.19.0"
+pandas = "^2.2.2"
+matplotlib = "^3.9.2"
+albumentations = "^1.4.14"
+scikit-learn = "^1.5.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
