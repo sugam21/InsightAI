@@ -1,10 +1,18 @@
 from utils.utils import Config, visualize_image, seed_everything
 from dataloader import CustomDataLoader
+from model import SqueezeNet
+from trainer import Trainer
+import torch
+import argparse
+from logger import get_logger
 
 CONFIG_PATH: str = r"config.json"
+DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
+LOG = get_logger(__name__)
 
 
 def main() -> None:
+    LOG.info("Inside main")
     config: Config = Config.from_json(CONFIG_PATH)
 
     seed_everything(config.train['seed'])
@@ -12,10 +20,19 @@ def main() -> None:
     dataloader = CustomDataLoader(config.data)
     train_dataloader = dataloader.get_train_dataloader(batch_size=config.train['batch_size'])
     validation_dataloader = dataloader.get_validation_dataloader(batch_size=config.train['batch_size'])
-    test_dataloader = dataloader.get_test_dataloader(batch_size=config.train['batch_size'])
 
-    visualize_image(validation_dataloader, num_batch_to_show=1)
+    # visualize_image(validation_dataloader, num_batch_to_show=1)
+
+    model = SqueezeNet(config.model['output'])
+
+    trainer = Trainer(model=model, config=config.train, train_dataloader=train_dataloader,
+                      valid_dataloader=validation_dataloader, device=DEVICE)
+    trainer.train()
 
 
 if __name__ == "__main__":
+    args = argparse.ArgumentParser(description="Training")
+    args.add_argument('-s', '--save', default=False, type=str, help='whether to save the model or not.')
+    args.add_argument('-r', '--resume', default=None, type=str, help='path to latest checkpoint. default(None)')
+
     main()
