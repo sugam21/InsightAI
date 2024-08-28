@@ -5,10 +5,13 @@ import random
 import torch
 import matplotlib.pyplot as plt
 from logger import setup_logging
+import os
+import tomllib
 
 
 class Config:
     """Takes the config file path and returns a Config object while setting up logger."""
+
     def __init__(self, data: Dict[str, any], train: Dict[str, any], model: Dict[str, any]) -> None:
         self.data: Dict[str, any] = data
         self.train: Dict[str, any] = train
@@ -16,9 +19,15 @@ class Config:
         setup_logging(save_dir=self.train["log_save_dir"])
 
     @classmethod
-    def from_json(cls, config_path):
+    def from_json(cls, config_path: str):
         with open(config_path, mode='r') as file:
             config: Dict[str, any] = json.load(file)
+        return cls(config['data'], config['train'], config['model'])
+
+    @classmethod
+    def from_toml(cls, config_path: str):
+        with open(config_path, mode='rb') as file:
+            config: Dict[str, any] = tomllib.load(file)
         return cls(config['data'], config['train'], config['model'])
 
 
@@ -59,3 +68,13 @@ def visualize_image(loader, num_batch_to_show: int = 2) -> None:
         counter += 1
         if counter == num_batch_to_show:
             break
+
+
+def check_dir_if_exists(path: str) -> None:
+    """Check if a certain dir exists or not"""
+    assert os.path.isdir(path), f"{path} does not exists."
+
+
+def check_file_if_exists(path: str) -> None:
+    """Check if a certain file exists or not"""
+    assert os.path.isfile(path), f"{path} file does not exists"
