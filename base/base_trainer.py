@@ -82,7 +82,7 @@ class BaseTrainer:
     def _resume_checkpoint(self, resume_path: str):
         resume_path: str = str(resume_path)
         logging.info(f"Loading checkpoint: {resume_path}.....")
-        checkpoint = torch.load(resume_path)
+        checkpoint = torch.load(resume_path, weights_only=False)
         self.start_epoch: int = checkpoint['epoch'] + 1
         self.model.load_state_dict(checkpoint['state_dict'])
         self.optimizer.load_state_dict(checkpoint['optimizer'])
