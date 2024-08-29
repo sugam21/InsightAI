@@ -29,7 +29,7 @@ class BaseTrainer:
 
         check_dir_if_exists(self.checkpoint_dir)
 
-        if self.config_train.get("resume") is not None:
+        if self.config_train["resume"] is not None:
             self._resume_checkpoint(self.config_train.get("resume"))
 
     @abstractmethod
@@ -55,18 +55,19 @@ class BaseTrainer:
         """Complete training epoch"""
         for epoch in range(self.start_epoch, self.epochs + 1):
             result = self._train_epoch(epoch)
+            LOG.info("Epoch: {}".format(epoch))
 
-            log = {"epoch": epoch}
+            log: Dict[str, float] = {}
             log.update(result)
             # add logging here
             for key, value in log.items():
-                LOG.info("{}:{}".format(str(key), value))
+                LOG.info("{}:{:.3f}".format(str(key), value))
 
             if epoch % self.save_period == 0:
                 self._save_checkpoint(epoch)
 
     def _save_checkpoint(self, epoch: int):
-        LOG.info("Saving Checkpoint")
+        LOG.info("----Saving Checkpoint----")
         state = {
             'epoch': epoch,
             'state_dict': self.model.state_dict(),
@@ -75,7 +76,7 @@ class BaseTrainer:
         }
 
         filename: str = os.path.join(self.checkpoint_dir, f'checkpoint-epoch{epoch}.pth')
-        torch.save(state)
+        torch.save(state, filename)
         logging.info(f"Saving checkpoint: {filename}.......")
 
     def _resume_checkpoint(self, resume_path: str):
@@ -83,10 +84,6 @@ class BaseTrainer:
         logging.info(f"Loading checkpoint: {resume_path}.....")
         checkpoint = torch.load(resume_path)
         self.start_epoch: int = checkpoint['epoch'] + 1
-        self.model.state_dict(checkpoint['state_dict'])
-        if self.optimizer['config']['optimizer']['type'] != self.config_train['optimizer']['type']:
-            LOG.warning("Optimizer file given in config file is different from optimizer in checkpoint."
-                        "Optimizer parameters are not being resumed.")
-        else:
-            self.optimizer.state_dict(checkpoint['optimizer'])
+        self.model.load_state_dict(checkpoint['state_dict'])
+        self.optimizer.load_state_dict(checkpoint['optimizer'])
         LOG.info(f"Checkpoints loaded. Resume training from epoch {self.start_epoch}")
