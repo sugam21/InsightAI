@@ -10,15 +10,14 @@ from logger import get_logger
 from .custom_dataset import CustomDataset
 from .data_transform import DataTransform
 
-logger: any = get_logger("dataloader")
+LOG: any = get_logger("dataloader")
 
 
 class CustomDataLoader(BaseDataLoader):
     def __init__(self, data_path: Dict[str, any]):
         super().__init__(data_path)
 
-        logger.debug(f"Loading the data from {self.data_path['image_path']}")
-        logger.info(f"Loading the data from {self.data_path['image_path']}")
+        LOG.debug(f"Loading the data from {self.data_path['image_path']}.... ")
 
         self.image_label_df: pd.DataFrame = pd.read_csv(
             self.data_path["image_labels_path"]
@@ -31,8 +30,8 @@ class CustomDataLoader(BaseDataLoader):
         train_size: float = 0.8
         test_size: float = (1 - train_size) / 2
         validation_size: float = (1 - train_size) / 2
-        logger.warning(
-            f"Splitting the data into training: {train_size}, validation: {validation_size} and testing: {test_size}"
+        LOG.debug(
+            f"Splitting the data into training: {train_size:.2f}, validation: {validation_size:.2f} and testing: {test_size:.2f}"
         )
         train, temp_test = train_test_split(
             image_label_df,
