@@ -16,7 +16,7 @@ class Trainer(BaseTrainer):
         self.train_dataloader = train_dataloader
         self.valid_dataloader = valid_dataloader
         self.lr_scheduler = lr_scheduler
-        self.log_step = int(np.sqrt(train_dataloader.batch_size))  # either do this or use batch size from config.
+        self.log_step = int(train_dataloader.batch_size)  # either do this or use batch size from config.
 
     def _train_epoch(self, epoch: int):
         """Train logic for 1 epoch.
@@ -30,7 +30,6 @@ class Trainer(BaseTrainer):
         total_accuracy: int = 0
         num_batch: int = len(self.train_dataloader)
         result: Dict[str, any] = {}
-        LOG.info("----Training----")
         for batch_idx, (data, target) in tqdm(enumerate(self.train_dataloader), unit="batch", total=num_batch):
             data, target = data.to(self.device), target.to(self.device)
             self.optimizer.zero_grad()
@@ -51,11 +50,11 @@ class Trainer(BaseTrainer):
         result["train_loss"] = total_loss / num_batch
         result["train_accuracy"] = total_accuracy / num_batch
 
-        LOG.debug("Epoch: {}, Loss: {}, Accuracy: {} ".format(
-            epoch,
-            total_loss / num_batch,
-            total_accuracy / num_batch,
-        ))
+        # LOG.info("Epoch: {}, Loss: {:.4f}, Accuracy: {:.4f} ".format(
+        #     epoch,
+        #     total_loss / num_batch,
+        #     total_accuracy / num_batch,
+        # ))
 
         if self.valid_dataloader is not None:
             val_log = self._valid_epoch(epoch)
@@ -70,20 +69,19 @@ class Trainer(BaseTrainer):
         total_accuracy: int = 0
         val_log: Dict[str, any] = {}
         num_batch: int = len(self.valid_dataloader)
-        LOG.info("----Validation----")
         with torch.no_grad():
-            for batch_idx, (data, target) in tqdm(enumerate(self.train_dataloader), unit="batch", total=num_batch):
+            for batch_idx, (data, target) in tqdm(enumerate(self.valid_dataloader), unit="batch", total=num_batch):
                 data, target = data.to(self.device), target.to(self.device)
                 output = self.model(data)  # this is softmax prob. in size [batch, 17]
                 loss = self.criterion(output, target)
                 accuracy: float = self.metric(output, target)
                 total_loss += loss.item()
                 total_accuracy += accuracy
-            LOG.debug('Epoch: {} Loss: {:.4f} Accuracy: {:.4f}'.format(
-                epoch,
-                total_loss,
-                total_accuracy
-            ))
-        val_log['val_loss'] = total_loss
-        val_log['val_accuracy'] = total_accuracy
+            # LOG.info('Epoch: {} Loss: {:.4f} Accuracy: {:.4f}'.format(
+            #     epoch,
+            #     total_loss / num_batch,
+            #     total_accuracy/num_batch
+            # ))
+        val_log['val_loss'] = total_loss / num_batch
+        val_log['val_accuracy'] = total_accuracy / num_batch
         return val_log

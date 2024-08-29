@@ -20,6 +20,8 @@ class Config:
 
     @classmethod
     def from_json(cls, config_path: str):
+        check_file_if_exists(config_path)
+
         with open(config_path, mode='r') as file:
             config: Dict[str, any] = json.load(file)
         return cls(config['data'], config['train'], config['model'])
