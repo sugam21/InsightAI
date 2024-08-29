@@ -12,8 +12,8 @@ LOG = get_logger(__name__)
 
 
 def main() -> None:
-    LOG.info("Inside main")
     config: Config = Config.from_json(CONFIG_PATH)
+    LOG.debug("Configuration Loaded successfully. ✔")
 
     seed_everything(config.train['seed'])
 

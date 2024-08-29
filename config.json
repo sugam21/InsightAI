@@ -23,9 +23,9 @@
       "args": {
         "lr": 0.001,
         "weight_decay": 0
-      },
-      "resume": {}
+      }
     },
+    "resume": "saved/checkpoints/checkpoint-epoch4.pth",
     "loss": "cross_entropy_loss",
     "metric": "accuracy"
   },

@@ -1889,6 +1889,20 @@ opt-einsum = ["opt-einsum (>=3.3)"]
 optree = ["optree (>=0.11.0)"]
 
 [[package]]
+name = "torchtest"
+version = "0.5"
+description = ""
+optional = false
+python-versions = "*"
+files = [
+    {file = "torchtest-0.5-py3-none-any.whl", hash = "sha256:9b70896df8f3e79b0cf77a80e7ebf28eae4e330e04477031f6b0e463cba14b9a"},
+    {file = "torchtest-0.5.tar.gz", hash = "sha256:e6cffe5a9c8a6d6dbc927413ec9f9f0ed00f9123b8eb1b08e0a84a4b2f6e0772"},
+]
+
+[package.dependencies]
+torch = "*"
+
+[[package]]
 name = "torchvision"
 version = "0.19.0"
 description = "image and video datasets and models for torch deep learning"
@@ -2020,4 +2034,4 @@ zstd = ["zstandard (>=0.18.0)"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12"
-content-hash = "26b9d62e99d5dd9542f2dea19f49ee51cfa0cfc017a9d6d06850e209c9e916da"
+content-hash = "a86d11f6dc7c3c5c94969a161fba598a3a969795303b78b3f727c7111ffc7064"

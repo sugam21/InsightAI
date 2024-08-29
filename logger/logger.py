@@ -4,7 +4,7 @@ from typing import Dict
 import os
 
 
-def setup_logging(save_dir: str, log_config_file_name: str = r"logger/logging_configs.json", default_level=logging.INFO):
+def setup_logging(save_dir: str, log_config_file_name: str = r"logger/logging_config.json", default_level=logging.INFO):
     """Setup logging configuration
     Args:
         save_dir (str): directory to save logs. This is the path(log_save_dir) present in your main config.json.
