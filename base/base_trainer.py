@@ -29,7 +29,7 @@ class BaseTrainer:
 
         check_dir_if_exists(self.checkpoint_dir)
 
-        if self.config_train["resume"] is not None:
+        if self.config_train["resume"] != "":
             self._resume_checkpoint(self.config_train.get("resume"))
 
     @abstractmethod
@@ -81,7 +81,7 @@ class BaseTrainer:
 
     def _resume_checkpoint(self, resume_path: str):
         resume_path: str = str(resume_path)
-        logging.info(f"Loading checkpoint: {resume_path}.....")
+        LOG.info(f"Loading checkpoint: {resume_path}.....")
         checkpoint = torch.load(resume_path, weights_only=False)
         self.start_epoch: int = checkpoint['epoch'] + 1
         self.model.load_state_dict(checkpoint['state_dict'])
