@@ -7,6 +7,9 @@ import matplotlib.pyplot as plt
 from logger import setup_logging
 import os
 import tomllib
+import kaggle
+import subprocess
+import shutil
 
 
 class Config:
@@ -80,3 +83,25 @@ def check_dir_if_exists(path: str) -> None:
 def check_file_if_exists(path: str) -> None:
     """Check if a certain file exists or not"""
     assert os.path.isfile(path), f"{path} file does not exists"
+
+def create_dir(path: str) -> None:
+    """Create a new directory if it does not exist."""
+    os.mkdir(path)
+
+def download_dataset(data_config) -> None:
+    """Download dataset from kaggle."""
+    dataset_name_kaggle: str = data_config['dataset_name_kaggle']
+    # Downloads the data into current directory.
+    subprocess.run(['kaggle', 'datasets', 'download', '-d', dataset_name_kaggle], capture_output=True, text=True)
+    # Extracts the dataset name from the current directory
+    slash_index: int = dataset_name_kaggle.find("/") + 1
+    data_file: str = dataset_name_kaggle[slash_index:] + ".zip" # extract from dataset_name_kaggle variable
+    # Unpack the .zip file into data directory
+    try:
+        create_dir(data_config['data_dir'])
+    except OSError:
+        print("Directory already exists. Skipping.......")
+    finally:
+        shutil.unpack_archive(data_file, data_config['data_dir'])
+        # Remove the .zip file
+        os.remove(data_file)
