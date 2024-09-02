@@ -1,6 +1,6 @@
 from utils.utils import Config, visualize_image, seed_everything
 from dataloader import CustomDataLoader
-from model import SqueezeNet
+from model import MobileNet
 from trainer import Trainer
 import torch
 import argparse
@@ -23,7 +23,7 @@ def main() -> None:
 
     # visualize_image(validation_dataloader, num_batch_to_show=1)
 
-    model = SqueezeNet(config.model['output'])
+    model = MobileNet(config.model['output'])
 
     trainer = Trainer(model=model, config=config.train, train_dataloader=train_dataloader,
                       valid_dataloader=validation_dataloader, device=DEVICE)
