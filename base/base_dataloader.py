@@ -5,6 +5,7 @@ import os
 
 
 class BaseDataLoader:
+
     def __init__(self, data_path: Dict[str, any]):
         self._train_dataset = None
         self._validation_dataset = None
@@ -18,14 +19,19 @@ class BaseDataLoader:
 
     def _does_dir_exists(self):
         """Checks if the data directory exists or not."""
-        assert os.path.isdir(self.data_path['image_path']), f"{self.data_path['image_path']} directory does not exists."
+        assert os.path.isdir(
+            self.data_path["image_path"]
+        ), f"{self.data_path['image_path']} directory does not exists."
 
     def _does_data_exists(self):
         """Checks if the data directory contains any data or not."""
-        assert len(os.listdir(self.data_path['image_path'])) != 0, f"{self.data_path['image_path']} dir is empty."
+        assert (len(os.listdir(self.data_path["image_path"]))
+                != 0), f"{self.data_path['image_path']} dir is empty."
 
     @abstractmethod
-    def _get_splits(self, image_label_df: pd.DataFrame) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
+    def _get_splits(
+        self, image_label_df: pd.DataFrame
+    ) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
         """Takes the pandas dataframe and splits into train test and validation dataframe
         Args:
             image_label_df (pd.DataFrame): The master dataframe containing images with its label.

@@ -13,6 +13,7 @@ LOG = get_logger("trainer")
 
 
 class BaseTrainer:
+
     def __init__(self, model, config) -> None:
         self.model: any = model
         self.config_train: Dict[str, any] = config
@@ -22,10 +23,10 @@ class BaseTrainer:
         self.criterion = self._get_criterion()
         self.metric: any = self._get_metric()
 
-        self.epochs: int = self.config_train['epochs']
-        self.save_period: int = self.config_train['save_period']
+        self.epochs: int = self.config_train["epochs"]
+        self.save_period: int = self.config_train["save_period"]
         self.start_epoch: int = 1
-        self.checkpoint_dir = self.config_train['checkpoint_save_dir']
+        self.checkpoint_dir = self.config_train["checkpoint_save_dir"]
 
         check_dir_if_exists(self.checkpoint_dir)
 
@@ -41,15 +42,17 @@ class BaseTrainer:
         raise NotImplementedError
 
     def _get_criterion(self):
-        return getattr(model_loss, self.config_train['loss'])
+        return getattr(model_loss, self.config_train["loss"])
 
     def _get_metric(self):
-        return getattr(model_metric, self.config_train['metric'])
+        return getattr(model_metric, self.config_train["metric"])
 
     def _get_optimizer(self):
-        module_name: str = self.config_train['optimizer']['type']
-        module_params: Dict[str, any] = dict(self.config_train['optimizer']['args'])
-        return getattr(torch.optim, module_name)(self.model.parameters(), **module_params)
+        module_name: str = self.config_train["optimizer"]["type"]
+        module_params: Dict[str,
+                            any] = dict(self.config_train["optimizer"]["args"])
+        return getattr(torch.optim, module_name)(self.model.parameters(),
+                                                 **module_params)
 
     def train(self):
         """Complete training epoch"""
@@ -69,13 +72,14 @@ class BaseTrainer:
     def _save_checkpoint(self, epoch: int):
         LOG.info("----Saving Checkpoint----")
         state = {
-            'epoch': epoch,
-            'state_dict': self.model.state_dict(),
-            'optimizer': self.optimizer.state_dict(),
-            'config': self.config_train
+            "epoch": epoch,
+            "state_dict": self.model.state_dict(),
+            "optimizer": self.optimizer.state_dict(),
+            "config": self.config_train,
         }
 
-        filename: str = os.path.join(self.checkpoint_dir, f'checkpoint-epoch{epoch}.pth')
+        filename: str = os.path.join(self.checkpoint_dir,
+                                     f"checkpoint-epoch{epoch}.pth")
         torch.save(state, filename)
         logging.info(f"Saving checkpoint: {filename}.......")
 
@@ -83,7 +87,9 @@ class BaseTrainer:
         resume_path: str = str(resume_path)
         LOG.info(f"Loading checkpoint: {resume_path}.....")
         checkpoint = torch.load(resume_path, weights_only=False)
-        self.start_epoch: int = checkpoint['epoch'] + 1
-        self.model.load_state_dict(checkpoint['state_dict'])
-        self.optimizer.load_state_dict(checkpoint['optimizer'])
-        LOG.info(f"Checkpoints loaded. Resume training from epoch {self.start_epoch}")
+        self.start_epoch: int = checkpoint["epoch"] + 1
+        self.model.load_state_dict(checkpoint["state_dict"])
+        self.optimizer.load_state_dict(checkpoint["optimizer"])
+        LOG.info(
+            f"Checkpoints loaded. Resume training from epoch {self.start_epoch}"
+        )

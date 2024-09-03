@@ -14,15 +14,17 @@ LOG: any = get_logger("dataloader")
 
 
 class CustomDataLoader(BaseDataLoader):
+
     def __init__(self, data_path: Dict[str, any]):
         super().__init__(data_path)
 
         LOG.debug(f"Loading the data from {self.data_path['image_path']}.... ")
 
         self.image_label_df: pd.DataFrame = pd.read_csv(
-            self.data_path["image_labels_path"]
-        ).drop(columns=["Unnamed: 0"], axis=1)
-        self.train, self.validation, self.test = self._get_splits(self.image_label_df)
+            self.data_path["image_labels_path"]).drop(columns=["Unnamed: 0"],
+                                                      axis=1)
+        self.train, self.validation, self.test = self._get_splits(
+            self.image_label_df)
 
     def _get_splits(
         self, image_label_df: pd.DataFrame
@@ -54,9 +56,9 @@ class CustomDataLoader(BaseDataLoader):
             transform=DataTransform(input_size=self.data_path["image_size"]),
         )
 
-        self.train_dataloader = DataLoader(
-            self._train_dataset, batch_size=batch_size, shuffle=True
-        )
+        self.train_dataloader = DataLoader(self._train_dataset,
+                                           batch_size=batch_size,
+                                           shuffle=True)
         return self.train_dataloader
 
     def get_validation_dataloader(self, batch_size: int = 32):
@@ -67,9 +69,8 @@ class CustomDataLoader(BaseDataLoader):
             transform=DataTransform(input_size=self.data_path["image_size"]),
         )
 
-        self.validation_dataloader = DataLoader(
-            self._validation_dataset, batch_size=batch_size
-        )
+        self.validation_dataloader = DataLoader(self._validation_dataset,
+                                                batch_size=batch_size)
         return self.validation_dataloader
 
     def get_test_dataloader(self, batch_size: int = 32):
@@ -80,5 +81,6 @@ class CustomDataLoader(BaseDataLoader):
             transform=DataTransform(input_size=self.data_path["image_size"]),
         )
 
-        self.test_dataloader = DataLoader(self._test_dataset, batch_size=batch_size)
+        self.test_dataloader = DataLoader(self._test_dataset,
+                                          batch_size=batch_size)
         return self.test_dataloader
