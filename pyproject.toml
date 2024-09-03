@@ -15,6 +15,7 @@ albumentations = "^1.4.14"
 scikit-learn = "^1.5.1"
 tqdm = "^4.66.5"
 kaggle = "^1.6.17"
+dvc = {extras = ["azure"], version = "^3.55.2"}
 
 
 [tool.poetry.group.test.dependencies]
