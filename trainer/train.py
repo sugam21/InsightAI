@@ -1,5 +1,3 @@
-from typing import Dict
-
 import torch
 from tqdm import tqdm
 
@@ -33,13 +31,13 @@ class Trainer(BaseTrainer):
         Args:
             epoch (int): Current epoch.
         Returns:
-            result (Dict[str, any]): A log containing average loss and metric of epoch.
+            result (dict[str, any]): A log containing average loss and metric of epoch.
         """
         self.model.train()
         total_loss: int = 0
         total_accuracy: int = 0
         num_batch: int = len(self.train_dataloader)
-        result: Dict[str, any] = {}
+        result: dict[str, any] = {}
         for batch_idx, (data, target) in tqdm(enumerate(self.train_dataloader),
                                               unit="batch",
                                               total=num_batch):
@@ -60,12 +58,6 @@ class Trainer(BaseTrainer):
         result["train_loss"] = total_loss / num_batch
         result["train_accuracy"] = total_accuracy / num_batch
 
-        # LOG.info("Epoch: {}, Loss: {:.4f}, Accuracy: {:.4f} ".format(
-        #     epoch,
-        #     total_loss / num_batch,
-        #     total_accuracy / num_batch,
-        # ))
-
         if self.valid_dataloader is not None:
             val_log = self._valid_epoch(epoch)
             result.update(val_log)
@@ -77,7 +69,7 @@ class Trainer(BaseTrainer):
         self.model.eval()
         total_loss: int = 0
         total_accuracy: int = 0
-        val_log: Dict[str, any] = {}
+        val_log: dict[str, any] = {}
         num_batch: int = len(self.valid_dataloader)
         with torch.no_grad():
             for batch_idx, (data,
@@ -91,13 +83,6 @@ class Trainer(BaseTrainer):
                 accuracy: float = self.metric(output, target)
                 total_loss += loss.item()
                 total_accuracy += accuracy
-            # LOG.info('Epoch: {} Loss: {:.4f} Accuracy: {:.4f}'.format(
-            #     epoch,
-            #     total_loss / num_batch,
-            #     total_accuracy/num_batch
-            # ))
         val_log["val_loss"] = total_loss / num_batch
-        val_log["val_accuracy"] = total_accuracy / num_batch
-        return val_log
         val_log["val_accuracy"] = total_accuracy / num_batch
         return val_log

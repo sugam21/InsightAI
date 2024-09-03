@@ -1,5 +1,5 @@
 from abc import abstractmethod
-from typing import Dict
+# from typing import Dict
 import os
 from utils import check_dir_if_exists
 from logger import get_logger
@@ -16,7 +16,7 @@ class BaseTrainer:
 
     def __init__(self, model, config) -> None:
         self.model: any = model
-        self.config_train: Dict[str, any] = config
+        self.config_train: dict[str, any] = config
 
         # self.optimizer = optimizer
         self.optimizer = self._get_optimizer()
@@ -49,8 +49,7 @@ class BaseTrainer:
 
     def _get_optimizer(self):
         module_name: str = self.config_train["optimizer"]["type"]
-        module_params: Dict[str,
-                            any] = dict(self.config_train["optimizer"]["args"])
+        module_params: dict[str, any] = dict(self.config_train["optimizer"]["args"])
         return getattr(torch.optim, module_name)(self.model.parameters(),
                                                  **module_params)
 
@@ -60,7 +59,7 @@ class BaseTrainer:
             result = self._train_epoch(epoch)
             LOG.info("Epoch: {}".format(epoch))
 
-            log: Dict[str, float] = {}
+            log: dict[str, float] = {}
             log.update(result)
             # add logging here
             for key, value in log.items():
@@ -69,7 +68,8 @@ class BaseTrainer:
             if epoch % self.save_period == 0:
                 self._save_checkpoint(epoch)
 
-    def _save_checkpoint(self, epoch: int):
+    def _save_checkpoint(self, epoch: int) -> None:
+        """Saves the checkpoint in the specified dir."""
         LOG.info("----Saving Checkpoint----")
         state = {
             "epoch": epoch,
@@ -83,7 +83,8 @@ class BaseTrainer:
         torch.save(state, filename)
         logging.info(f"Saving checkpoint: {filename}.......")
 
-    def _resume_checkpoint(self, resume_path: str):
+    def _resume_checkpoint(self, resume_path: str) -> None:
+        """Resume Checkpoint using the resume_path file."""
         resume_path: str = str(resume_path)
         LOG.info(f"Loading checkpoint: {resume_path}.....")
         checkpoint = torch.load(resume_path, weights_only=False)

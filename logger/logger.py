@@ -1,6 +1,5 @@
 import json
 import logging.config
-from typing import Dict
 import os
 
 
@@ -19,7 +18,7 @@ def setup_logging(
     """
     if os.path.isfile(log_config_file_name):
         with open(log_config_file_name, mode="r") as f:
-            log_config: Dict[str, any] = json.load(f)
+            log_config: dict[str, any] = json.load(f)
 
         for _, handler in log_config["handlers"].items():
             # Updates the filename in logging_config with the full path.

@@ -1,5 +1,4 @@
 import json
-from typing import Dict
 import numpy as np
 import random
 import torch
@@ -15,11 +14,11 @@ import shutil
 class Config:
     """Takes the config file path and returns a Config object while setting up logger."""
 
-    def __init__(self, data: Dict[str, any], train: Dict[str, any],
-                 model: Dict[str, any]) -> None:
-        self.data: Dict[str, any] = data
-        self.train: Dict[str, any] = train
-        self.model: Dict[str, any] = model
+    def __init__(self, data: dict[str, any], train: dict[str, any],
+                 model: dict[str, any]) -> None:
+        self.data: dict[str, any] = data
+        self.train: dict[str, any] = train
+        self.model: dict[str, any] = model
         setup_logging(save_dir=self.train["log_save_dir"])
 
     @classmethod
@@ -27,13 +26,13 @@ class Config:
         check_file_if_exists(config_path)
 
         with open(config_path, mode="r") as file:
-            config: Dict[str, any] = json.load(file)
+            config: dict[str, any] = json.load(file)
         return cls(config["data"], config["train"], config["model"])
 
     @classmethod
     def from_toml(cls, config_path: str):
         with open(config_path, mode="rb") as file:
-            config: Dict[str, any] = tomllib.load(file)
+            config: dict[str, any] = tomllib.load(file)
         return cls(config["data"], config["train"], config["model"])
 
 
