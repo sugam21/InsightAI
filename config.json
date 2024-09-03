@@ -1,5 +1,7 @@
 {
   "data": {
+    "dataset_name_kaggle": "",
+    "data_dir": "",
     "image_path": "data\\images",
     "pdf_path": "data\\pdfs",
     "image_labels_path": "data\\image_labels.csv",
@@ -8,7 +10,6 @@
   },
   "train": {
     "batch_size": 32,
-    "buffer_size": 1000,
     "epochs": 50,
     "checkpoint_save_dir": "saved\\checkpoints",
     "log_save_dir": "saved\\logs",
@@ -25,7 +26,7 @@
         "weight_decay": 0
       }
     },
-    "resume": "saved/checkpoints/checkpoint-epoch4.pth",
+    "resume": "saved/checkpoints/checkpoint-epoch10.pth",
     "loss": "cross_entropy_loss",
     "metric": "accuracy"
   },
