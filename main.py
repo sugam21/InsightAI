@@ -15,24 +15,43 @@ def main() -> None:
     config: Config = Config.from_json(CONFIG_PATH)
     LOG.debug("Configuration Loaded successfully. ✔")
 
-    seed_everything(config.train['seed'])
+    seed_everything(config.train["seed"])
 
     dataloader = CustomDataLoader(config.data)
-    train_dataloader = dataloader.get_train_dataloader(batch_size=config.train['batch_size'])
-    validation_dataloader = dataloader.get_validation_dataloader(batch_size=config.train['batch_size'])
+    train_dataloader = dataloader.get_train_dataloader(
+        batch_size=config.train["batch_size"])
+    validation_dataloader = dataloader.get_validation_dataloader(
+        batch_size=config.train["batch_size"])
 
     # visualize_image(validation_dataloader, num_batch_to_show=1)
 
-    model = MobileNet(config.model['output'])
+    model = MobileNet(config.model["output"])
 
-    trainer = Trainer(model=model, config=config.train, train_dataloader=train_dataloader,
-                      valid_dataloader=validation_dataloader, device=DEVICE)
+    trainer = Trainer(
+        model=model,
+        config=config.train,
+        train_dataloader=train_dataloader,
+        valid_dataloader=validation_dataloader,
+        device=DEVICE,
+    )
     trainer.train()
 
 
 if __name__ == "__main__":
     args = argparse.ArgumentParser(description="Training")
-    args.add_argument('-s', '--save', default=False, type=str, help='whether to save the model or not.')
-    args.add_argument('-r', '--resume', default=None, type=str, help='path to latest checkpoint. default(None)')
+    args.add_argument(
+        "-s",
+        "--save",
+        default=False,
+        type=str,
+        help="whether to save the model or not.",
+    )
+    args.add_argument(
+        "-r",
+        "--resume",
+        default=None,
+        type=str,
+        help="path to latest checkpoint. default(None)",
+    )
 
     main()

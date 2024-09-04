@@ -1,4 +1,3 @@
-import torch
 from torchvision.models import squeezenet1_1, mobilenet_v3_large
 import torch.nn as nn
 from base import BaseModel
@@ -8,10 +7,15 @@ LOG = get_logger("model")
 
 
 class SqueezeNet(BaseModel):
+
     def __init__(self, out_feature: int):
         super().__init__()
-        self.model = squeezenet1_1(weights="SqueezeNet1_1_Weights.DEFAULT", progress=True)
-        self.model.classifier[1] = nn.Conv2d(512, out_feature, kernel_size=(1, 1), stride=(1, 1))
+        self.model = squeezenet1_1(weights="SqueezeNet1_1_Weights.DEFAULT",
+                                   progress=True)
+        self.model.classifier[1] = nn.Conv2d(512,
+                                             out_feature,
+                                             kernel_size=(1, 1),
+                                             stride=(1, 1))
         LOG.debug("Successfully loaded the model.✔")
 
     def forward(self, image):
@@ -20,6 +24,7 @@ class SqueezeNet(BaseModel):
 
 
 class MobileNet(nn.Module):
+
     def __init__(self, out_feature: int):
         super().__init__()
         self.model = mobilenet_v3_large(weights="DEFAULT", progress=True)

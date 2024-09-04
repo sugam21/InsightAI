@@ -1,10 +1,13 @@
 import json
 import logging.config
-from typing import Dict
 import os
 
 
-def setup_logging(save_dir: str, log_config_file_name: str = r"logger/logging_config.json", default_level=logging.INFO):
+def setup_logging(
+    save_dir: str,
+    log_config_file_name: str = r"logger/logging_config.json",
+    default_level=logging.INFO,
+):
     """Setup logging configuration
     Args:
         save_dir (str): directory to save logs. This is the path(log_save_dir) present in your main config.json.
@@ -14,17 +17,20 @@ def setup_logging(save_dir: str, log_config_file_name: str = r"logger/logging_co
         None
     """
     if os.path.isfile(log_config_file_name):
-        with open(log_config_file_name, mode='r') as f:
-            log_config: Dict[str, any] = json.load(f)
+        with open(log_config_file_name, mode="r") as f:
+            log_config: dict[str, any] = json.load(f)
 
         for _, handler in log_config["handlers"].items():
             # Updates the filename in logging_config with the full path.
             if "filename" in handler:
-                handler['filename'] = os.path.join(save_dir, handler['filename'])
+                handler["filename"] = os.path.join(save_dir,
+                                                   handler["filename"])
         logging.config.dictConfig(log_config)
     else:
         # print(f"Warning: ")
-        logging.warning(f"logging configuration file is missing from {log_config_file_name}.")
+        logging.warning(
+            f"logging configuration file is missing from {log_config_file_name}."
+        )
         logging.basicConfig(level=default_level)
 
 

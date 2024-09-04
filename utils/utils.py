@@ -1,5 +1,4 @@
 import json
-from typing import Dict
 import numpy as np
 import random
 import torch
@@ -15,25 +14,26 @@ import shutil
 class Config:
     """Takes the config file path and returns a Config object while setting up logger."""
 
-    def __init__(self, data: Dict[str, any], train: Dict[str, any], model: Dict[str, any]) -> None:
-        self.data: Dict[str, any] = data
-        self.train: Dict[str, any] = train
-        self.model: Dict[str, any] = model
+    def __init__(self, data: dict[str, any], train: dict[str, any],
+                 model: dict[str, any]) -> None:
+        self.data: dict[str, any] = data
+        self.train: dict[str, any] = train
+        self.model: dict[str, any] = model
         setup_logging(save_dir=self.train["log_save_dir"])
 
     @classmethod
     def from_json(cls, config_path: str):
         check_file_if_exists(config_path)
 
-        with open(config_path, mode='r') as file:
-            config: Dict[str, any] = json.load(file)
-        return cls(config['data'], config['train'], config['model'])
+        with open(config_path, mode="r") as file:
+            config: dict[str, any] = json.load(file)
+        return cls(config["data"], config["train"], config["model"])
 
     @classmethod
     def from_toml(cls, config_path: str):
-        with open(config_path, mode='rb') as file:
-            config: Dict[str, any] = tomllib.load(file)
-        return cls(config['data'], config['train'], config['model'])
+        with open(config_path, mode="rb") as file:
+            config: dict[str, any] = tomllib.load(file)
+        return cls(config["data"], config["train"], config["model"])
 
 
 def seed_everything(seed: int = 42) -> None:
@@ -84,24 +84,31 @@ def check_file_if_exists(path: str) -> None:
     """Check if a certain file exists or not"""
     assert os.path.isfile(path), f"{path} file does not exists"
 
+
 def create_dir(path: str) -> None:
     """Create a new directory if it does not exist."""
     os.mkdir(path)
 
+
 def download_dataset(data_config) -> None:
     """Download dataset from kaggle."""
-    dataset_name_kaggle: str = data_config['dataset_name_kaggle']
+    dataset_name_kaggle: str = data_config["dataset_name_kaggle"]
     # Downloads the data into current directory.
-    subprocess.run(['kaggle', 'datasets', 'download', '-d', dataset_name_kaggle], capture_output=True, text=True)
+    subprocess.run(
+        ["kaggle", "datasets", "download", "-d", dataset_name_kaggle],
+        capture_output=True,
+        text=True,
+    )
     # Extracts the dataset name from the current directory
     slash_index: int = dataset_name_kaggle.find("/") + 1
-    data_file: str = dataset_name_kaggle[slash_index:] + ".zip" # extract from dataset_name_kaggle variable
+    data_file: str = (dataset_name_kaggle[slash_index:] + ".zip"
+                     )  # extract from dataset_name_kaggle variable
     # Unpack the .zip file into data directory
     try:
-        create_dir(data_config['data_dir'])
+        create_dir(data_config["data_dir"])
     except OSError:
         print("Directory already exists. Skipping.......")
     finally:
-        shutil.unpack_archive(data_file, data_config['data_dir'])
+        shutil.unpack_archive(data_file, data_config["data_dir"])
         # Remove the .zip file
         os.remove(data_file)
