@@ -1,0 +1,6 @@
+{
+  "embedding_store_dir": "saved/db/",
+  "collection_name": "InsightAI",
+  "embedding_model": "all-minilm"
+
+}
