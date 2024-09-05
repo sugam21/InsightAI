@@ -17,6 +17,7 @@ tqdm = "^4.66.5"
 kaggle = "^1.6.17"
 dvc = {extras = ["azure"], version = "^3.55.2"}
 langchain-chroma = ">=0.1.2"
+langchain-redis = "^0.0.3"
 
 [tool.poetry.group.test.dependencies]
 torchtest = "^0.5"
@@ -25,18 +26,15 @@ torchtest = "^0.5"
 sphinx = "^8.0.2"
 insegel = "^1.3.1"
 
-<<<<<<< HEAD
 [tool.poetry.group.rag.dependencies]
 ollama = "^0.3.2"
 chromadb = "^0.5.5"
 pypdf = "^4.3.1"
 langchain-community = "^0.2.15"
 langchain-ollama = "^0.1.3"
-=======
 
 [tool.poetry.group.formatter.dependencies]
 yapf = "^0.40.2"
->>>>>>> mlflow
 
 [build-system]
 requires = ["poetry-core"]
