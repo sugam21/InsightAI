@@ -1,6 +1,9 @@
 {
+  "pdf_dir": "data/pdfs",
   "embedding_store_dir": "saved/db/",
   "collection_name": "InsightAI",
-  "embedding_model": "all-minilm"
-
+  "embedding_model": "all-minilm",
+  "redis_url": "",
+  "index_name": "",
+  "llm_cache_threshold": ""
 }
