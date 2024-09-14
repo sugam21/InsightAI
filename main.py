@@ -1,7 +1,7 @@
-from utils.utils import Config, visualize_image, seed_everything
-from dataloader import CustomDataLoader
-from model import MobileNet
-from trainer import Trainer
+from src.utils import Config, seed_everything
+from src.dataloader import CustomDataLoader
+from src.model import MobileNet
+from src.trainer import Trainer
 import torch
 import argparse
 from logger import get_logger

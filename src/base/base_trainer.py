@@ -1,13 +1,13 @@
 from abc import abstractmethod
 # from typing import Dict
 import os
-from utils import check_dir_if_exists
+from src.utils import check_dir_if_exists
 from logger import get_logger
 import torch
 import logging
 import torch.optim
-import model.loss as model_loss
-import model.metric as model_metric
+from src import model as model_loss
+import src.model.metric as model_metric
 
 LOG = get_logger("trainer")
 

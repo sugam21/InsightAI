@@ -2,7 +2,7 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from torch.utils.data import DataLoader
 
-from base.base_dataloader import BaseDataLoader
+from src.base.base_dataloader import BaseDataLoader
 from logger import get_logger
 
 from .custom_dataset import CustomDataset

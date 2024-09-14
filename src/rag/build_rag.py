@@ -1,10 +1,9 @@
 import json
 from langchain_community.document_loaders import PyPDFLoader
-from uuid import uuid4
-from base import BaseRag
+from src.base import BaseRag
 from logger import get_logger
 
-PATH_TO_PDF: str = r"../data/pdfs/c0/all-products_esuprt_desktop_esuprt_alienware_dsk_alienware-alpha_reference guide_en-us.pdf"
+PATH_TO_PDF: str = r"../../data/pdfs/c0/all-products_esuprt_desktop_esuprt_alienware_dsk_alienware-alpha_reference guide_en-us.pdf"
 LOG = get_logger("build_rag")
 
 class CustomRag(BaseRag):
