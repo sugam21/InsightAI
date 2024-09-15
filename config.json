@@ -2,17 +2,16 @@
   "data": {
     "dataset_name_kaggle": "",
     "data_dir": "",
-    "image_path": "data\\images",
-    "pdf_path": "data\\pdfs",
-    "image_labels_path": "data\\image_labels.csv",
+    "image_path": "D:\\Python\\InsightAI\\data\\images",
+    "image_labels_path": "D:\\Python\\InsightAI\\data\\image_labels.csv",
     "random_state": 123456,
     "image_size": 224
   },
   "train": {
     "batch_size": 32,
     "epochs": 50,
-    "checkpoint_save_dir": "saved\\checkpoints",
-    "log_save_dir": "saved\\logs",
+    "checkpoint_save_dir": "D:\\Python\\InsightAI\\saved\\checkpoints",
+    "log_save_dir": "D:\\Python\\InsightAI\\saved\\logs",
     "save_period": 1,
     "verbosity": 2,
     "early_stop": 10,
@@ -26,7 +25,7 @@
         "weight_decay": 0
       }
     },
-    "resume": "saved/checkpoints/checkpoint-epoch10.pth",
+    "resume": "D:\\Python\\InsightAI\\saved\\checkpoints\\checkpoint-epoch49.pth",
     "loss": "cross_entropy_loss",
     "metric": "accuracy"
   },
