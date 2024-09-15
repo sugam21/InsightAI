@@ -1,7 +1,7 @@
 from torchvision.models import squeezenet1_1, mobilenet_v3_large
 import torch.nn as nn
 from src.base import BaseModel
-from logger import get_logger
+from src.utils import get_logger
 
 LOG = get_logger("model")
 

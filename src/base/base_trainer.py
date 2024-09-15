@@ -2,7 +2,7 @@ from abc import abstractmethod
 # from typing import Dict
 import os
 from src.utils import check_dir_if_exists
-from logger import get_logger
+from src.utils import get_logger
 import torch
 import logging
 import torch.optim

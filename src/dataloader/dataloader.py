@@ -3,7 +3,7 @@ from sklearn.model_selection import train_test_split
 from torch.utils.data import DataLoader
 
 from src.base.base_dataloader import BaseDataLoader
-from logger import get_logger
+from src.utils import get_logger
 
 from .custom_dataset import CustomDataset
 from .data_transform import DataTransform

@@ -2,7 +2,7 @@ import torch
 from tqdm import tqdm
 
 from src.base import BaseTrainer
-from logger import get_logger
+from src.utils import get_logger
 
 LOG = get_logger("training")
 

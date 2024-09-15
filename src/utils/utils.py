@@ -3,7 +3,7 @@ import numpy as np
 import random
 import torch
 import matplotlib.pyplot as plt
-from logger import setup_logging
+from src.utils.logger import setup_logging
 import os
 import tomllib
 import kaggle

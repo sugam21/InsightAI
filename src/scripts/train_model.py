@@ -4,9 +4,9 @@ from src.model import MobileNet
 from src.trainer import Trainer
 import torch
 import argparse
-from logger import get_logger
+from src.utils import get_logger
 
-CONFIG_PATH: str = r"config.json"
+CONFIG_PATH: str = r"../../config.json"
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 LOG = get_logger(__name__)
 

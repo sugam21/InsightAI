@@ -20,9 +20,7 @@ class BaseDataLoader:
 
     def _does_dir_exists(self) -> None:
         """Checks if the data directory exists or not."""
-        assert os.path.isdir(
-            self.data_path["image_path"]
-        ), f"{self.data_path['image_path']} directory does not exists."
+        assert os.path.isdir(self.data_path["image_path"]), f"{self.data_path["image_path"]} directory does not exists."
 
     def _does_data_exists(self) -> None:
         """Checks if the data directory contains any data or not."""
@@ -31,7 +29,7 @@ class BaseDataLoader:
 
     @abstractmethod
     def _get_splits(
-        self, image_label_df: pd.DataFrame
+            self, image_label_df: pd.DataFrame
     ) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
         """Takes the pandas dataframe and splits into train test and validation dataframe
         Args:
