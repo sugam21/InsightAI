@@ -1,9 +1,11 @@
-from src.utils import Config, seed_everything
+import argparse
+
+import torch
+
 from src.dataloader import CustomDataLoader
 from src.model import MobileNet
 from src.trainer import Trainer
-import torch
-import argparse
+from src.utils import Config, seed_everything
 from src.utils import get_logger
 
 CONFIG_PATH: str = r"../../config.json"
