@@ -5,7 +5,7 @@ import os
 
 def setup_logging(
     save_dir: str,
-    log_config_file_name: str = r"logger/logging_config.json",
+    log_config_file_name: str = r"D:\Python\InsightAI\logging_config.json",
     default_level=logging.INFO,
 ):
     """Setup logging configuration
