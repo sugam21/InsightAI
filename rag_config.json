@@ -1,9 +1,17 @@
 {
-  "pdf_dir": "data/pdfs",
-  "embedding_store_dir": "saved/db/",
-  "collection_name": "InsightAI",
-  "embedding_model": "all-minilm",
-  "redis_url": "",
-  "index_name": "",
-  "llm_cache_threshold": ""
+  "data": {
+    "data_dir": "data\\pdfs",
+    "persist_directory": "chroma_langchain_db"
+  },
+  "train": {
+    "output_document_from_vector_store": 5,
+    "chunk_size": 1000,
+    "chunk_overlap": 10,
+    "log_save_dir": "D:\\Python\\InsightAI\\saved\\logs"
+  },
+  "model": {
+    "embedding_model": "mxbai-embed-large",
+    "llm_model": "llama3.2:3b",
+    "collection_name": "test_collection"
+  }
 }
