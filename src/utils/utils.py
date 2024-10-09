@@ -1,14 +1,17 @@
 import json
-import numpy as np
-import random
-import torch
-import matplotlib.pyplot as plt
-from src.utils.logger import setup_logging
 import os
-import tomllib
-import kaggle
-import subprocess
+import random
 import shutil
+import subprocess
+import tomllib
+
+import matplotlib.pyplot as plt
+import numpy as np
+import torch
+
+from src.utils.logger import setup_logging
+
+log_config_file_name: str = r"D:\Python\InsightAI\logging_config.json"
 
 
 class Config:
@@ -19,7 +22,7 @@ class Config:
         self.data: dict[str, any] = data
         self.train: dict[str, any] = train
         self.model: dict[str, any] = model
-        setup_logging(save_dir=self.train["log_save_dir"])
+        setup_logging(save_dir=self.train["log_save_dir"], log_config_file_name=log_config_file_name)
 
     @classmethod
     def from_json(cls, config_path: str):
@@ -102,7 +105,7 @@ def download_dataset(data_config) -> None:
     # Extracts the dataset name from the current directory
     slash_index: int = dataset_name_kaggle.find("/") + 1
     data_file: str = (dataset_name_kaggle[slash_index:] + ".zip"
-                     )  # extract from dataset_name_kaggle variable
+                      )  # extract from dataset_name_kaggle variable
     # Unpack the .zip file into data directory
     try:
         create_dir(data_config["data_dir"])
