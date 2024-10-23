@@ -17,6 +17,7 @@ tqdm = "^4.66.5"
 kaggle = "^1.6.17"
 dvc = {extras = ["azure"], version = "^3.55.2"}
 langchain-chroma = ">=0.1.2"
+gradio = "^5.1.0"
 
 [tool.poetry.group.test.dependencies]
 torchtest = "^0.5"

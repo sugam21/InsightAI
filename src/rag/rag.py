@@ -34,8 +34,8 @@ class_name_mapping_dict = {
 
 
 class RagPipeline:
-    def __init__(self) -> None:
-        self.config = Config.from_json(RAG_CONFIG_PATH)
+    def __init__(self, rag_config_path) -> None:
+        self.config = Config.from_json(rag_config_path)
         self._setup_path()
         self._setup_models()
         self._setup_vector_store()
@@ -80,6 +80,7 @@ class RagPipeline:
         )
 
         retrived_query = retriever.invoke(query)
+        print(retrived_query)
         formatted_docs = "\n\n".join(doc.page_content for doc in retrived_query)
         # generating_animation: Loader = Loader(desc="Generating Response", timeout=0.05).start()
         result = self.llm.invoke(f"""You are an expert assistant for question answering tasks.
@@ -92,7 +93,7 @@ class RagPipeline:
 
 
 if __name__ == "__main__":
-    rp = RagPipeline()
+    rp = RagPipeline(rag_config_path=RAG_CONFIG_PATH)
     query = "Show me step by step on setting up the computer ?"
     image_class = class_name_mapping_dict['c14']
     while True:
