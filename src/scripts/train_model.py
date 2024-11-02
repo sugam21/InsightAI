@@ -5,8 +5,7 @@ import torch
 from src.dataloader import CustomDataLoader
 from src.model import MobileNet
 from src.trainer import Trainer
-from src.utils import Config, seed_everything
-from src.utils import get_logger
+from src.utils import Config, get_logger, seed_everything
 
 CONFIG_PATH: str = r"../../config.json"
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
@@ -21,9 +20,11 @@ def main() -> None:
 
     dataloader = CustomDataLoader(config.data)
     train_dataloader = dataloader.get_train_dataloader(
-        batch_size=config.train["batch_size"])
+        batch_size=config.train["batch_size"]
+    )
     validation_dataloader = dataloader.get_validation_dataloader(
-        batch_size=config.train["batch_size"])
+        batch_size=config.train["batch_size"]
+    )
 
     # visualize_image(validation_dataloader, num_batch_to_show=1)
 
