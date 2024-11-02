@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import albumentations as A
 import gradio as gr
 import numpy as np
@@ -5,9 +7,9 @@ import torch
 from albumentations.pytorch import ToTensorV2
 from PIL import Image
 
-from ..model import MobileNet
-from ..rag import RagPipeline
-from ..utils import get_logger
+from src.model import MobileNet
+from src.rag import RagPipeline
+from src.utils import get_logger
 
 class_name_mapping_dict = {
     "0": "Alienware alpha or Alienware steam machine",
@@ -30,8 +32,8 @@ class_name_mapping_dict = {
 }
 
 
-RAG_CONFIG_PATH: str = r"D:\Python\InsightAI\rag_config.json"
-LOG = get_logger("build_rag")
+RAG_CONFIG_PATH: str = Path("rag_config.json").resolve()
+LOG = get_logger("gradio_app")
 
 
 def get_prediction(input_image_path):
@@ -60,28 +62,47 @@ def get_prediction(input_image_path):
     return class_name_mapping_dict[str(predicted_tensor)]
 
 
+last_uploaded_image_path: str | None = None
+
+
 def generate_response(message, history):
-    input_image_path = message["files"][0]
-    user_query: str = message["text"]
+    global last_uploaded_image_path
+    try:
+        if "files" in message and message["files"]:
+            input_image_path = message["files"][0]
+            last_uploaded_image_path = input_image_path
+        elif last_uploaded_image_path:
+            input_image_path = last_uploaded_image_path
+        else:
+            return "Please Upload an image!!"
+    except Exception as e:
+        return f"An error occured, {e}"
+
+    user_query: str = message.get("text", "")
+    if not user_query:
+        return "User qurey is empty!!"
+
     predict = get_prediction(input_image_path)
-    print(predict)
+    LOG.debug(predict)
+    LOG.debug(user_query)
     rp = RagPipeline(rag_config_path=RAG_CONFIG_PATH)
     result = rp.run(user_query, predict)
     return result.content
 
+
 demo = gr.ChatInterface(
-        fn=generate_response,
-        type="messages",
-        title="InsightAI",
-        description="Upload an image and ask me questions.",
-        examples=[
-            {"text": "What is the ram of the model?"},
-            {"text": "Show me step wise guide to replace the battery?"},
-            {"text": "What is the battery capacity ?"},
-        ],
-        theme="Ocean",
-        multimodal=True,
-    )
+    fn=generate_response,
+    type="messages",
+    title="InsightAI",
+    description="Upload an image and ask me questions.",
+    examples=[
+        {"text": "What is the ram of the model?"},
+        {"text": "Show me step wise guide to replace the battery?"},
+        {"text": "What is the battery capacity ?"},
+    ],
+    theme="Ocean",
+    multimodal=True,
+)
 
 if __name__ == "__main__":
     demo.launch(debug=True)
