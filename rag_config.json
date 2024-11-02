@@ -7,11 +7,10 @@
     "output_document_from_vector_store": 5,
     "chunk_size": 1000,
     "chunk_overlap": 10,
-    "log_save_dir": "D:\\Python\\InsightAI\\saved\\logs"
-  },
-  "model": {
-    "embedding_model": "mxbai-embed-large",
-    "llm_model": "llama3.2:3b",
-    "collection_name": "test_collection"
+    "model": {
+      "embedding_model": "mxbai-embed-large",
+      "llm_model": "llama3.2:3b",
+      "collection_name": "test_collection"
+    }
   }
 }

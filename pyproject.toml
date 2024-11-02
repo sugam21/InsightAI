@@ -14,17 +14,12 @@ matplotlib = "^3.9.2"
 albumentations = "^1.4.14"
 scikit-learn = "^1.5.1"
 tqdm = "^4.66.5"
-kaggle = "^1.6.17"
 dvc = {extras = ["azure"], version = "^3.55.2"}
 langchain-chroma = ">=0.1.2"
 gradio = "^5.1.0"
-
-[tool.poetry.group.test.dependencies]
-torchtest = "^0.5"
-
-[tool.poetry.group.docs.dependencies]
-sphinx = "^8.0.2"
-insegel = "^1.3.1"
+lightning = "^2.4.0"
+wandb = "^0.18.5"
+loguru = "^0.7.2"
 
 [tool.poetry.group.rag.dependencies]
 ollama = "^0.3.2"
@@ -32,11 +27,6 @@ chromadb = "^0.5.5"
 pypdf = "^4.3.1"
 langchain-community = "^0.2.15"
 langchain-ollama = "^0.1.3"
-langchain-redis = "^0.0.3"
-
-[tool.poetry.group.formatter.dependencies]
-yapf = "^0.40.2"
-
 
 [tool.poetry.group.dev.dependencies]
 ipykernel = "^6.29.5"

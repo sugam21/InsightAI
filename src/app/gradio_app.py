@@ -1,15 +1,13 @@
 from pathlib import Path
 
-import albumentations as A
 import gradio as gr
-import numpy as np
 import torch
-from albumentations.pytorch import ToTensorV2
+from loguru import logger
 from PIL import Image
+from torchvision import transforms
 
-from src.model import MobileNet
+from src.model import VGGModel
 from src.rag import RagPipeline
-from src.utils import get_logger
 
 class_name_mapping_dict = {
     "0": "Alienware alpha or Alienware steam machine",
@@ -33,33 +31,30 @@ class_name_mapping_dict = {
 
 
 RAG_CONFIG_PATH: str = Path("rag_config.json").resolve()
-LOG = get_logger("gradio_app")
 
 
 def get_prediction(input_image_path):
-    transform = A.Compose(
+    transform = transforms.Compose(
         [
-            A.Resize(width=224, height=224),
-            A.Normalize(normalization="min_max_per_channel"),
-            ToTensorV2(),
+            transforms.Resize(size=(224, 224)),
+            transforms.ToTensor(),
+            transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
         ]
     )
     # load model
-    model = MobileNet(out_feature=17)
-    checkpoint = torch.load(
-        r"D:\Python\InsightAI\saved\checkpoints\checkpoint-epoch50.pth",
-        weights_only=False,
+    path_to_checkpoint = str(
+        Path(r"saved\checkpoints\epoch=14-step=7725_vgg16.ckpt").resolve(),
     )
-    model.load_state_dict(checkpoint["state_dict"])
 
-    image_numpy = np.array(Image.open(input_image_path).convert("RGB"))
-    transformed_image = transform(image=image_numpy)["image"].unsqueeze(
-        0
-    )  # added a bath dim.
-    with torch.no_grad():
-        predicted_tensor = model(transformed_image).argmax(dim=1).item()
+    model = VGGModel.load_from_checkpoint(path_to_checkpoint, num_classes=17)
+    model.eval()
 
-    return class_name_mapping_dict[str(predicted_tensor)]
+    image_numpy = Image.open(input_image_path).convert("RGB")
+    transformed_image = transform(image_numpy).unsqueeze(0)  # added a bath dim.
+    logits = model(transformed_image)
+    preds = torch.argmax(logits, -1).item()
+
+    return class_name_mapping_dict[str(preds)]
 
 
 last_uploaded_image_path: str | None = None
@@ -83,8 +78,8 @@ def generate_response(message, history):
         return "User qurey is empty!!"
 
     predict = get_prediction(input_image_path)
-    LOG.debug(predict)
-    LOG.debug(user_query)
+    logger.debug(predict)
+    logger.debug(user_query)
     rp = RagPipeline(rag_config_path=RAG_CONFIG_PATH)
     result = rp.run(user_query, predict)
     return result.content

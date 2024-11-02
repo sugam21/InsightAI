@@ -1,4 +1,3 @@
-import warnings
 from pathlib import Path
 
 import chromadb
@@ -6,14 +5,11 @@ from langchain.callbacks.manager import CallbackManager
 from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
 from langchain_chroma import Chroma
 from langchain_ollama import ChatOllama, OllamaEmbeddings
+from loguru import logger
 
-warnings.filterwarnings("ignore")
+from src import Config
 
-from src.utils import Config, Loader, get_logger
-
-# RAG_CONFIG_PATH: str = "../../rag_config.json"
 RAG_CONFIG_PATH: str = Path("rag_config.json").resolve()
-LOG = get_logger("build_rag")
 
 class_name_mapping_dict = {
     "c0": "Alienware alpha or Alienware steam machine",
@@ -46,27 +42,26 @@ class RagPipeline:
     def _setup_path(self):
         """Fixes the relative path problem. So basically in order to go to the required dir, it goes 3 parents up
         from the current file and append the data directory there."""
-        data_dir = Path(".").resolve() / self.config.data["data_dir"]
-        LOG.debug(f"Data Directory {data_dir}")
-        persist_directory = Path(".").resolve() / self.config.data["persist_directory"]
-        LOG.debug(f"Persist directory {persist_directory}")
-        self.config.data["data_dir"] = data_dir
-        self.config.data["persist_directory"] = persist_directory
+        self.config.data["data_dir"] = Path(self.config.data["data_dir"]).resolve()
+        logger.debug(f"Data Directory {self.config.data['data_dir']}")
+        self.config.data["persist_directory"] = Path(
+            self.config.data["persist_directory"]
+        ).resolve()
+        logger.debug(f"Persist directory {self.config.data["persist_directory"]}")
 
     def _setup_models(self):
         """Set's up embedding models and llm models"""
         self.embeddings = OllamaEmbeddings(
-            model=self.config.model["embedding_model"],
+            model=self.config.train["model"]["embedding_model"],
         )
         callback_manager = CallbackManager([StreamingStdOutCallbackHandler()])
         self.llm = ChatOllama(
-            model=self.config.model["llm_model"],
+            model=self.config.train["model"]["llm_model"],
             num_thread=8,
             verbose=True,
             num_gpu=1,
             callbacks=callback_manager,
         )
-        # self.llm = ChatOllama(model=self.config.model["llm_model"])
 
     def _setup_vector_store(self):
         print(
@@ -78,7 +73,7 @@ class RagPipeline:
         )
         self.vector_store = Chroma(
             client=persistent_client,
-            collection_name=self.config.model["collection_name"],
+            collection_name=self.config.train["model"]["collection_name"],
             embedding_function=self.embeddings,
         )
 
@@ -94,13 +89,11 @@ class RagPipeline:
                 "filter": {"category": image_class},
             },
         )
-        LOG.debug(f"Image class {image_class}")
-        LOG.debug(f"User query {query}")
+        logger.debug(f"Image class {image_class}")
+        logger.debug(f"User query {query}")
 
         retrived_query = retriever.invoke(query)
         formatted_docs = "\n\n".join(doc.page_content for doc in retrived_query)
-        # print(formatted_docs)
-        # generating_animation: Loader = Loader(desc="Generating Response", timeout=0.05).start()
         result = self.llm.invoke(
             f"""You are an expert assistant for question answering tasks.
          Use the following context information to answer the question. If there is something repeating
@@ -109,9 +102,7 @@ class RagPipeline:
          Question: {query}
          Context:{formatted_docs}"""
         )
-        # generating_animation.stop()
         return result
-        # return
 
 
 if __name__ == "__main__":
@@ -124,4 +115,3 @@ if __name__ == "__main__":
         result = rp.run(query, image_class)
         print(result.content)
         break
-#    print(RAG_CONFIG_PATH)

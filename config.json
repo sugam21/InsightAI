@@ -1,36 +1,25 @@
 {
   "data": {
-    "dataset_name_kaggle": "",
-    "data_dir": "",
-    "image_path": "D:\\Python\\InsightAI\\data\\images",
-    "image_labels_path": "D:\\Python\\InsightAI\\data\\image_labels.csv",
-    "random_state": 123456,
-    "image_size": 224
+    "image_path": "data\\images",
+    "image_labels_path": "data\\data.csv",
+    "seed": 123456,
+    "image_size": 224,
+    "train_split": 0.8
   },
   "train": {
+    "num_class": 17,
     "batch_size": 32,
     "epochs": 50,
-    "checkpoint_save_dir": "D:\\Python\\InsightAI\\saved\\checkpoints",
-    "log_save_dir": "D:\\Python\\InsightAI\\saved\\logs",
-    "save_period": 1,
-    "verbosity": 2,
+    "checkpoint_save_dir": "saved\\checkpoints",
     "early_stop": 10,
-    "tensorboard": true,
-    "n_gpu": 1,
     "seed": 123456,
     "optimizer": {
       "type": "Adam",
       "args": {
-        "lr": 0.001,
-        "weight_decay": 0
+        "lr": 0.001
       }
     },
-    "resume": "D:\\Python\\InsightAI\\saved\\checkpoints\\checkpoint-epoch49.pth",
     "loss": "cross_entropy_loss",
     "metric": "accuracy"
-  },
-  "model": {
-    "input": [3, 256, 256],
-    "output": 17
   }
 }
