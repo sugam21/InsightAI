@@ -1,15 +1,18 @@
+import warnings
 from pathlib import Path
 
 import chromadb
 from langchain.callbacks.manager import CallbackManager
 from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
 from langchain_chroma import Chroma
-from langchain_ollama import ChatOllama
-from langchain_ollama import OllamaEmbeddings
+from langchain_ollama import ChatOllama, OllamaEmbeddings
 
-from src.utils import Config, get_logger
+warnings.filterwarnings("ignore")
 
-RAG_CONFIG_PATH: str = "../../rag_config.json"
+from src.utils import Config, Loader, get_logger
+
+# RAG_CONFIG_PATH: str = "../../rag_config.json"
+RAG_CONFIG_PATH: str = Path("rag_config.json").resolve()
 LOG = get_logger("build_rag")
 
 class_name_mapping_dict = {
@@ -43,10 +46,10 @@ class RagPipeline:
     def _setup_path(self):
         """Fixes the relative path problem. So basically in order to go to the required dir, it goes 3 parents up
         from the current file and append the data directory there."""
-        data_dir = Path("__file__").resolve().parent.parent.parent / self.config.data["data_dir"]
-        persist_directory = (
-                Path("__file__").resolve().parent.parent.parent / self.config.data["persist_directory"]
-        )
+        data_dir = Path(".").resolve() / self.config.data["data_dir"]
+        LOG.debug(f"Data Directory {data_dir}")
+        persist_directory = Path(".").resolve() / self.config.data["persist_directory"]
+        LOG.debug(f"Persist directory {persist_directory}")
         self.config.data["data_dir"] = data_dir
         self.config.data["persist_directory"] = persist_directory
 
@@ -56,12 +59,23 @@ class RagPipeline:
             model=self.config.model["embedding_model"],
         )
         callback_manager = CallbackManager([StreamingStdOutCallbackHandler()])
-        self.llm = ChatOllama(model=self.config.model["llm_model"], num_thread=8, verbose=True, num_gpu=1,
-                              callbacks=callback_manager)
-        #self.llm = ChatOllama(model=self.config.model["llm_model"])
+        self.llm = ChatOllama(
+            model=self.config.model["llm_model"],
+            num_thread=8,
+            verbose=True,
+            num_gpu=1,
+            callbacks=callback_manager,
+        )
+        # self.llm = ChatOllama(model=self.config.model["llm_model"])
 
     def _setup_vector_store(self):
-        persistent_client = chromadb.PersistentClient(path=str(self.config.data["persist_directory"]))
+        print(
+            "Setup Vector Store Path",
+            Path(self.config.data["persist_directory"]).resolve(),
+        )
+        persistent_client = chromadb.PersistentClient(
+            path=str(self.config.data["persist_directory"])
+        )
         self.vector_store = Chroma(
             client=persistent_client,
             collection_name=self.config.model["collection_name"],
@@ -75,28 +89,39 @@ class RagPipeline:
     def run(self, query: str, image_class: str):
         retriever = self.vector_store.as_retriever(
             search_type="similarity",
-            search_kwargs={"k": self.config.train['output_document_from_vector_store'],
-                           "filter": {"category": image_class}},
+            search_kwargs={
+                "k": self.config.train["output_document_from_vector_store"],
+                "filter": {"category": image_class},
+            },
         )
+        LOG.debug(f"Image class {image_class}")
+        LOG.debug(f"User query {query}")
 
         retrived_query = retriever.invoke(query)
-        print(retrived_query)
         formatted_docs = "\n\n".join(doc.page_content for doc in retrived_query)
+        # print(formatted_docs)
         # generating_animation: Loader = Loader(desc="Generating Response", timeout=0.05).start()
-        result = self.llm.invoke(f"""You are an expert assistant for question answering tasks.
-         Use the following context information to answer the question.
+        result = self.llm.invoke(
+            f"""You are an expert assistant for question answering tasks.
+         Use the following context information to answer the question. If there is something repeating
+        in the conetne do not repeat that into the response.
          If the context does not contain answer, just say that you don't know.\n\n
          Question: {query}
-         Context:{formatted_docs}""")
+         Context:{formatted_docs}"""
+        )
         # generating_animation.stop()
         return result
+        # return
 
 
 if __name__ == "__main__":
     rp = RagPipeline(rag_config_path=RAG_CONFIG_PATH)
     query = "Show me step by step on setting up the computer ?"
-    image_class = class_name_mapping_dict['c14']
+    image_class = (class_name_mapping_dict["c14"]).strip()
+    print(query)
+    print(image_class)
     while True:
         result = rp.run(query, image_class)
         print(result.content)
         break
+#    print(RAG_CONFIG_PATH)
