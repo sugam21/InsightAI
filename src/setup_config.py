@@ -7,8 +7,8 @@ class Config:
     """Takes the config file path and returns a Config object while setting up logger."""
 
     def __init__(self, data: dict[str, any], train: dict[str, any]) -> None:
-        self.data: dict[str, any] = data
-        self.train: dict[str, any] = train
+        self.data = data
+        self.train = train
 
     @classmethod
     def from_json(cls, config_path: Path | str):
