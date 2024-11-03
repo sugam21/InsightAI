@@ -10,7 +10,7 @@ from src import Config
 from src.dataloader import ImagePredictionLogger, LaptopDataModule
 from src.model import LitModel
 
-CONFIG_PATH: str = Path("config.json").resolve()
+CONFIG_PATH = Path("config.json").resolve()
 
 
 def fix_path(config):
