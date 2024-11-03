@@ -6,7 +6,6 @@ import wandb
 from lightning.pytorch.loggers import WandbLogger
 from loguru import logger
 
-import wandb
 from src import Config
 from src.dataloader import ImagePredictionLogger, LaptopDataModule
 from src.model import LitModel
