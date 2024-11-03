@@ -14,13 +14,12 @@ CONFIG_PATH = Path("config.json").resolve()
 
 
 def fix_path(config):
-    config["data"]["image_path"] = Path(config["data"]["image_path"]).resolve()
-    config["data"]["image_labels_path"] = Path(
-        config["data"]["image_labels_path"]
+    config.data["image_path"] = Path(config.data["image_path"]).resolve()
+    config.data["image_labels_path"] = Path(config.data["image_labels_path"]).resolve()
+    config.train["checkpoint_save_dir"] = Path(
+        config.train["checkpoint_save_dir"]
     ).resolve()
-    config["train"]["checkpoint_save_dir"] = Path(
-        config["train"]["checkpoint_save_dir"]
-    ).resolve()
+    return config
 
 
 def main() -> None:
