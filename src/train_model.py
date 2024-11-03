@@ -2,6 +2,7 @@ from pathlib import Path
 
 import lightning.pytorch as pl
 import pandas as pd
+import wandb
 from lightning.pytorch.loggers import WandbLogger
 from loguru import logger
 
