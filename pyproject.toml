@@ -10,10 +10,8 @@ package-mode = false
 python = "^3.12"
 pandas = "^2.2.2"
 matplotlib = "^3.9.2"
-albumentations = "^1.4.14"
 scikit-learn = "^1.5.1"
 tqdm = "^4.66.5"
-dvc = {extras = ["azure"], version = "^3.55.2"}
 langchain-chroma = ">=0.1.2"
 gradio = "^5.1.0"
 lightning = "^2.4.0"
@@ -22,7 +20,6 @@ torch = {version = "^2.5.1+cpu", source = "pytorch_cpu"}
 torchvision = {version = "^0.20.1+cpu", source = "pytorch_cpu"}
 
 [tool.poetry.group.rag.dependencies]
-ollama = "^0.3.2"
 chromadb = "^0.5.5"
 langchain-community = "^0.2.15"
 langchain-ollama = "^0.1.3"
