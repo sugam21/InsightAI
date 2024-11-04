@@ -9,7 +9,7 @@
     "chunk_overlap": 10,
     "model": {
       "embedding_model": "mxbai-embed-large",
-      "llm_model": "llama3.2:3b",
+      "llm_model": "llama3.2:1b",
       "collection_name": "test_collection"
     }
   }
