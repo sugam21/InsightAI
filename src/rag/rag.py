@@ -64,9 +64,8 @@ class RagPipeline:
         )
 
     def _setup_vector_store(self):
-        print(
-            "Setup Vector Store Path",
-            Path(self.config.data["persist_directory"]).resolve(),
+        logger.info(
+            f"Vector Store Path {Path(self.config.data["persist_directory"]).resolve()}"
         )
         persistent_client = chromadb.PersistentClient(
             path=str(self.config.data["persist_directory"])
@@ -89,8 +88,8 @@ class RagPipeline:
                 "filter": {"category": image_class},
             },
         )
-        logger.debug(f"Image class {image_class}")
-        logger.debug(f"User query {query}")
+        logger.debug(f"Image class: {image_class}")
+        logger.debug(f"User query: {query}")
 
         retrived_query = retriever.invoke(query)
         formatted_docs = "\n\n".join(doc.page_content for doc in retrived_query)
