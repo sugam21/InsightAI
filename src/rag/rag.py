@@ -106,10 +106,8 @@ class RagPipeline:
 
 if __name__ == "__main__":
     rp = RagPipeline(rag_config_path=RAG_CONFIG_PATH)
-    query = "Show me step by step on setting up the computer ?"
+    query = "What is the dimension of this model ?"
     image_class = (class_name_mapping_dict["c14"]).strip()
-    print(query)
-    print(image_class)
     while True:
         result = rp.run(query, image_class)
         print(result.content)
