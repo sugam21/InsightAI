@@ -78,6 +78,7 @@ def generate_response(message, history):
         return "User qurey is empty!!"
 
     predict = get_prediction(input_image_path)
+    logger.info(f"Predicted Image class {predict}")
     logger.debug(predict)
     logger.debug(user_query)
     rp = RagPipeline(rag_config_path=RAG_CONFIG_PATH)
