@@ -1,0 +1,30 @@
+data/
+notebooks/
+src/train_model.py
+__pycache__/
+.ipynb_checkpoints
+profile_default/
+ipython_config.py
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Git
+.git
+.gitignore
+
+# Env file
+.env
+
+# But don't ignore these files
+!.dockerignore
+!Dockerfile
+!src/
+
+
