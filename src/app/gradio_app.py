@@ -6,7 +6,7 @@ from loguru import logger
 from PIL import Image
 from torchvision import transforms
 
-from src.model import VGGModel
+from src.model import SqueezeNetModel
 from src.rag import RagPipeline
 
 class_name_mapping_dict = {
@@ -43,10 +43,10 @@ def get_prediction(input_image_path):
     )
     # load model
     path_to_checkpoint = str(
-        Path(r"saved\checkpoints\epoch=14-step=7725_vgg16.ckpt").resolve(),
+        Path(r"saved/checkpoints/epoch=14-step=7725_squeeze_net.ckpt").resolve(),
     )
 
-    model = VGGModel.load_from_checkpoint(path_to_checkpoint, num_classes=17)
+    model = SqueezeNetModel.load_from_checkpoint(path_to_checkpoint, num_classes=17)
     model.eval()
 
     image_numpy = Image.open(input_image_path).convert("RGB")
