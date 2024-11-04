@@ -4,8 +4,6 @@ data/*.py
 data/*.ipynb
 data/pdfs
 .idea
-saved/checkpoints/*.pth
-saved/checkpoints/*.ckpt
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
