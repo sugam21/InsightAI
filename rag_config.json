@@ -1,16 +1,16 @@
 {
   "data": {
     "data_dir": "data\\pdfs",
-    "persist_directory": "chroma_langchain_db"
+    "persist_directory": "vector_store_250chunk_openai"
   },
   "train": {
-    "output_document_from_vector_store": 5,
+    "output_document_from_vector_store": 3,
     "chunk_size": 1000,
     "chunk_overlap": 10,
     "model": {
-      "embedding_model": "mxbai-embed-large",
+      "embedding_model": "mxbai-embed-large:latest",
       "llm_model": "llama3.2:1b",
-      "collection_name": "test_collection"
+      "collection_name": "250_chunk_openai"
     }
   }
 }
