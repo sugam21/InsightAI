@@ -13,7 +13,9 @@ COPY pyproject.toml poetry.lock ./
 
 RUN poetry install --without dev && rm -rf $POETRY_CACHE_DIR
 
-COPY src/model src/rag rag_config.json saved/ ./
+COPY . .
 
+EXPOSE 7860
+ENV GRADIO_SERVER_NAME="0.0.0.0"
 
 ENTRYPOINT ["poetry", "run", "python", "-m", "src.app.gradio_app"]
