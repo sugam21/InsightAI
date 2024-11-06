@@ -125,9 +125,10 @@ class RagPipeline:
          Context:{formatted_docs}"""
         logger.debug(f"Prompt Length: {len(prompt)}")
         # result = self.llm.invoke(prompt)
+        final_message = ""
         for chunk in self.llm.stream(prompt):
-            yield chunk
-        # return result
+            final_message += chunk.content
+        return final_message
 
 
 if __name__ == "__main__":
