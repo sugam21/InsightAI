@@ -18,6 +18,8 @@ lightning = "^2.4.0"
 loguru = "^0.7.2"
 torch = {version = "^2.5.1+cpu", source = "pytorch_cpu"}
 torchvision = {version = "^0.20.1+cpu", source = "pytorch_cpu"}
+fastapi = "^0.115.4"
+gunicorn = "^23.0.0"
 
 [tool.poetry.group.rag.dependencies]
 chromadb = "^0.5.5"
