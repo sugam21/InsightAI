@@ -1,12 +1,15 @@
 import os
+import sys
 from pathlib import Path
 
 import chromadb
 import dotenv
-from langchain.callbacks.manager import CallbackManager
-from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
+
+# from langchain.callbacks.manager import CallbackManager
+# from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
 from langchain_chroma import Chroma
-from langchain_ollama import ChatOllama, OllamaEmbeddings
+
+# from langchain_ollama import ChatOllama, OllamaEmbeddings
 from langchain_openai import AzureChatOpenAI, AzureOpenAIEmbeddings
 from loguru import logger
 
@@ -14,6 +17,9 @@ from src import Config
 
 RAG_CONFIG_PATH: str = Path("rag_config.json").resolve()
 dotenv.load_dotenv()
+
+__import__("pysqlite3")
+sys.modules["sqlite3"] = sys.modules.pop("pysqlite3")
 
 class_name_mapping_dict = {
     "c0": "Alienware alpha or Alienware steam machine",
@@ -55,9 +61,9 @@ class RagPipeline:
 
     def _setup_models(self):
         """Set's up embedding models and llm models"""
-        self.embeddings = OllamaEmbeddings(
-            model=self.config.train["model"]["embedding_model"],
-        )
+        # self.embeddings = OllamaEmbeddings(
+        #     model=self.config.train["model"]["embedding_model"],
+        # )
         self.embeddings = AzureOpenAIEmbeddings(
             api_key=os.getenv("AZURE_OPENAI_KEY"),
             azure_endpoint=os.getenv("AZURE_OPENAI_ENDPOINT"),
@@ -143,5 +149,7 @@ if __name__ == "__main__":
     # break
     # prompt = "Tell me something about Azure."
     # for chunk in rp.llm.stream(prompt):
+    #     print(chunk.content, end="", flush=True)
+    # print(rp.llm)
     #     print(chunk.content, end="", flush=True)
     # print(rp.llm)

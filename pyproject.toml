@@ -20,6 +20,7 @@ torch = {version = "^2.5.1+cpu", source = "pytorch_cpu"}
 torchvision = {version = "^0.20.1+cpu", source = "pytorch_cpu"}
 fastapi = "^0.115.4"
 gunicorn = "^23.0.0"
+pysqlite3-binary = "^0.5.4"
 
 [tool.poetry.group.rag.dependencies]
 chromadb = "^0.5.5"
