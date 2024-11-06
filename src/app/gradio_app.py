@@ -2,6 +2,7 @@ from pathlib import Path
 
 import gradio as gr
 import torch
+from fastapi import FastAPI
 from loguru import logger
 from PIL import Image
 from torchvision import transforms
@@ -32,6 +33,7 @@ class_name_mapping_dict = {
 
 RAG_CONFIG_PATH: str = Path("rag_config.json").resolve()
 
+app = FastAPI()
 
 def get_prediction(input_image_path):
     transform = transforms.Compose(
@@ -100,5 +102,6 @@ demo = gr.ChatInterface(
     multimodal=True,
 )
 
+app = gr.mount_gradio_app(app, demo, "/")
 if __name__ == "__main__":
     demo.launch(debug=True)
