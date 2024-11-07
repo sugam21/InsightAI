@@ -17,4 +17,4 @@ langchain-openai>=0.2.6
 langchain-community>=0.3.5
 fastapi>=0.115.4
 gunicorn>=23.0.0
-pysqlite3-binary>=0.54
+pysqlite3-binary>=0.5.4
