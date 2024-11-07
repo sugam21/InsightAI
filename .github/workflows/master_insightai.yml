@@ -23,7 +23,7 @@ jobs:
           python-version: '3.12'
 
       - name: Run startup script
-        run: ./startup.sh
+        run: chmod +x startup.sh && ./startup.sh
 
       - name: Create and start virtual environment
         run: |
