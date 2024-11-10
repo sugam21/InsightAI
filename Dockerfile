@@ -1,12 +1,9 @@
 FROM python:3.12.4-slim
 
-WORKDIR /usr/src/app
-COPY . .
+WORKDIR /app
+COPY . /app
 RUN pip install --no-cache-dir -r requirements.txt
 
-EXPOSE 7860
-ENV GRADIO_SERVER_NAME="0.0.0.0"
+EXPOSE 8000
 
-# ENTRYPOINT ["python", "-m", "gunicorn", "main:app", "-k", "uvicorn.workers.UvicornWorker"]
-# ENTRYPOINT ["uvicorn", "main:app"]
-CMD ["python", "main.py"]
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
